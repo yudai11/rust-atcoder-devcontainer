@@ -11,35 +11,89 @@ fn main() {
         lrv: [(usize,usize,i64);n]
     }
 
-    let mut dp = vec![i64::MIN; w + 1];
-    dp[0] = 0;
+    let mut dp = vec![vec![-1; w + 1]];
+}
 
-    let mut deq: VecDeque<(i64, usize)> = VecDeque::new();
+struct LazySegmentTree {
+    n: usize,
+    data: Vec<i64>,
+    lazy: Vec<Option<i64>>, // Noneは遅延がないことを示す
+}
 
-    for &(l, r, v) in lrv.iter() {
-        let mut tmp_dp = dp.clone();
-        // empty deq
-        deq.clear();
-
-        // Search for only the extent to which dishes can be added can be updated.
-        for i in 0..=w - l {
-            if deq.len() > 0 && deq[0].1 == i {
-                deq.pop_front();
-            }
-            if !deq.is_empty() && deq[0].0 <= dp[i] {
-                deq.clear();
-            }
-            deq.push_back((dp[i], i + r + 1 - l));
-            let cv = deq[0].0;
-            tmp_dp[i + l] = tmp_dp[i + l].max(cv + v);
+impl LazySegmentTree {
+    fn new(size: usize) -> Self {
+        let n = size.next_power_of_two();
+        LazySegmentTree {
+            n,
+            data: vec![0; 2 * n],
+            lazy: vec![None; 2 * n],
         }
-
-        dp = tmp_dp;
     }
 
-    let mut res = dp[w];
-    if res < 0 {
-        res = -1;
+    // 遅延配列を伝播して適用
+    fn propagate(&mut self, node: usize, node_left: usize, node_right: usize) {
+        if let Some(value) = self.lazy[node] {
+            self.data[node] = value;
+            if node_left != node_right {
+                self.lazy[2 * node] = Some(value);
+                self.lazy[2 * node + 1] = Some(value);
+            }
+            self.lazy[node] = None;
+        }
     }
-    println!("{}", res);
+
+    // 範囲更新: 指定の範囲をvalueに設定
+    fn update_range(&mut self, left: usize, right: usize, value: i64) {
+        self.update_range_rec(left, right, value, 1, 0, self.n - 1);
+    }
+
+    fn update_range_rec(
+        &mut self,
+        left: usize,
+        right: usize,
+        value: i64,
+        node: usize,
+        node_left: usize,
+        node_right: usize,
+    ) {
+        self.propagate(node, node_left, node_right);
+        if right < node_left || node_right < left {
+            return;
+        }
+        if left <= node_left && node_right <= right {
+            self.lazy[node] = Some(value);
+            self.propagate(node, node_left, node_right);
+        } else {
+            let mid = (node_left + node_right) / 2;
+            self.update_range_rec(left, right, value, 2 * node, node_left, mid);
+            self.update_range_rec(left, right, value, 2 * node + 1, mid + 1, node_right);
+            self.data[node] = self.data[2 * node].max(self.data[2 * node + 1]);
+        }
+    }
+
+    // 範囲クエリ: 指定の範囲の最大値を取得
+    fn query_range(&mut self, left: usize, right: usize) -> i64 {
+        self.query_range_rec(left, right, 1, 0, self.n - 1)
+    }
+
+    fn query_range_rec(
+        &mut self,
+        left: usize,
+        right: usize,
+        node: usize,
+        node_left: usize,
+        node_right: usize,
+    ) -> i64 {
+        self.propagate(node, node_left, node_right);
+        if right < node_left || node_right < left {
+            return 0; // minなら i64::MAXにする
+        }
+        if left <= node_left && node_right <= right {
+            return self.data[node];
+        }
+        let mid = (node_left + node_right) / 2;
+        let left_res = self.query_range_rec(left, right, 2 * node, node_left, mid);
+        let right_res = self.query_range_rec(left, right, 2 * node + 1, mid + 1, node_right);
+        left_res.min(right_res) // minならmax -> min
+    }
 }
