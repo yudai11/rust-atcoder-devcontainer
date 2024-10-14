@@ -18,7 +18,7 @@ Cargo.lock
 /.vscode/
 
 # Ignore source code files but track the directories themselves using .gitkeep
-/src/contest/*
+# /src/contest/*
 !/src/contest/.gitkeep
 /src/lib/src/*
 !/src/lib/src/.gitkeep

@@ -1,0 +1,23 @@
+use proconio::input;
+// use proconio::marker::Chars;
+// use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+
+fn main() {
+    input! {
+        n: usize,
+        a: [isize; n-1]
+    }
+
+    let res = -a.iter().fold(0, |sum, &x| sum + x);
+    println!("{res}");
+}
