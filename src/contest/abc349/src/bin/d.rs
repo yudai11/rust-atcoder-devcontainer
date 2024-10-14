@@ -16,4 +16,23 @@ fn main() {
     input! {
         l: usize, r: usize
     }
+
+    let mut m = 0;
+    let mut division_list: Vec<(usize, usize)> = vec![];
+    let mut left = l;
+    while left < r {
+        let mut range = 1;
+        let mut cp_left = left;
+        while cp_left % 2 == 0 && left + 2 * range <= r {
+            cp_left /= 2;
+            range *= 2;
+        }
+        m += 1;
+        division_list.push((left, left + range));
+        left = left + range;
+    }
+    println!("{m}");
+    for &(l, r) in division_list.iter() {
+        println!("{l} {r}");
+    }
 }
