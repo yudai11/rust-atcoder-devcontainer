@@ -1,4 +1,4 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -14,7 +14,18 @@ use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        n: usize,
-        ab: [(Usize1,usize);n]
+        n: usize, c: usize,
+        t: [usize;n]
     }
+
+    let mut ans = 1;
+    let mut last_time = t[0];
+    for i in 1..n {
+        if t[i] - last_time >= c {
+            ans += 1;
+            last_time = t[i];
+        }
+    }
+
+    println!("{ans}");
 }

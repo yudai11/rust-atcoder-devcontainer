@@ -1,4 +1,4 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -12,9 +12,10 @@ use proconio::{input, marker::Usize1};
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
 
+
 fn main() {
     input! {
-        n: usize,
-        ab: [(Usize1,usize);n]
+
     }
+
 }

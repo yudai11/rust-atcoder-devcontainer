@@ -1,4 +1,4 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -14,7 +14,14 @@ use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-        n: usize,
-        ab: [(Usize1,usize);n]
+        n: usize
+    }
+
+    for i in 0..n {
+        if i % 3 == 2 {
+            print!("x");
+        } else {
+            print!("o");
+        }
     }
 }
