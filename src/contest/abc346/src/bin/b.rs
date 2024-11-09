@@ -15,19 +15,31 @@ use proconio::input;
 
 fn main() {
     input! {
-        mut w: isize, mut b: isize,
+        w: usize, b: usize,
     }
 
-    while w > 7 && b > 5 {
-        w -= 7;
-        b -= 5;
+    let _t = "wbwbwwbwbwbw";
+    let mut t = vec![];
+    for x in _t.chars() {
+        t.push(x);
     }
 
-    let x = w - b;
+    for i in 0..12 {
+        let mut num_b: usize = 0;
+        let mut num_w: usize = 0;
+        for j in 0..w + b {
+            if t[(i + j) % 12] == 'b' {
+                num_b += 1;
+            } else {
+                num_w += 1;
+            }
+        }
 
-    if -1 <= w - b && w - b <= 2 {
-        println!("Yes");
-    } else {
-        println!("No");
+        if num_b == b && num_w == w {
+            println!("Yes");
+            return;
+        }
     }
+
+    println!("No");
 }

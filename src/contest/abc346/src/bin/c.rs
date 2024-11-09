@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
@@ -13,10 +15,20 @@ use proconio::input;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
 
-
 fn main() {
     input! {
-
+        n: usize, k: usize,
+        a: [usize; n]
     }
 
+    let mut seen_nums = HashSet::new();
+    let mut ans: usize = (k + 1) * k / 2;
+    for ai in a {
+        if ai <= k && !seen_nums.contains(&ai) {
+            ans -= ai;
+            seen_nums.insert(ai);
+        }
+    }
+
+    println!("{ans}");
 }
