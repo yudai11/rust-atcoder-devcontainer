@@ -1,4 +1,4 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -12,30 +12,30 @@ use proconio::{input, marker::Usize1};
 // use std::cmp::Reverse;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree
 
 fn main() {
     input! {
-        n: usize, m: usize,
-        lr: [(Usize1,Usize1);n]
+        mut n: usize,
     }
 
-    // 第2成分(ri)でソート
-    // lr.sort_by_key(|&(_, x)| x);
-
-    // r_i=x となるiに対してmax(l_i)を返す
-    let mut max_l: Vec<usize> = vec![0; m];
-    for &(li, ri) in lr.iter() {
-        max_l[ri] = max_l[ri].max(li + 1);
+    let mut cnt = [0; 10];
+    while n > 0 {
+        cnt[n % 10] += 1;
+        n /= 10;
     }
 
-    let mut ans: usize = 0;
+    let mut feasi = true;
 
-    let mut left: usize = 0;
-    // let mut right = 0;
-    for right in 0..m {
-        left = left.max(max_l[right]);
-        ans += right + 1 - left;
+    for i in 1..=3 {
+        if cnt[i] != i {
+            feasi = false;
+        }
     }
 
-    println!("{ans}");
+    if feasi {
+        println!("Yes");
+    } else {
+        println!("No");
+    }
 }

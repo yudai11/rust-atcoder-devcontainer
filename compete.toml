@@ -36,6 +36,7 @@ use proconio::input;
 // use std::cmp::Reverse;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree
 
 
 fn main() {
