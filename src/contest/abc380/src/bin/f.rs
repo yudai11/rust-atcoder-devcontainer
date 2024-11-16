@@ -14,10 +14,15 @@ use proconio::input;
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
 
-
 fn main() {
     input! {
-
+        n: usize, m: usize, l: usize,
+        mut a: [usize; n],
+        mut b: [usize; n],
+        mut c: [usize; l],
     }
 
+    a.sort();
+    b.sort();
+    c.sort();
 }
