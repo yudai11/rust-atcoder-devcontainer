@@ -1,5 +1,4 @@
-use itertools::Itertools;
-use proconio::input;
+use proconio::{input, marker::Chars};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -16,16 +15,37 @@ use proconio::input;
 // use ac_library::{Additive, Segtree}; // segtree
 
 fn main() {
-    let mut ans = vec![];
-    loop {
-        input! {
-            a: usize,
+    input! {
+        n: usize,
+        s: Chars
+    }
+
+    if n % 2 == 0 {
+        println!("No");
+        return;
+    }
+
+    let m = (n - 1) / 2;
+    let mut feasi = true;
+    for i in 0..m {
+        if s[i] != '1' {
+            feasi = false;
+            break;
         }
-        ans.push(a);
-        if a == 0 {
+    }
+    if s[m] != '/' {
+        feasi = false;
+    }
+    for i in m + 1..n {
+        if s[i] != '2' {
+            feasi = false;
             break;
         }
     }
 
-    println!("{}", ans.iter().rev().join("\n"));
+    if feasi {
+        println!("Yes");
+    } else {
+        println!("No");
+    }
 }

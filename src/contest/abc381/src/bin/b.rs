@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use proconio::input;
+use proconio::{input, marker::Chars};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -18,30 +18,38 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
-        mut a: [usize; n],
-        m: usize,
-        mut b: [usize; m],
-        l: usize,
-        mut c: [usize; l],
-        q: usize,
-        x: [usize; q]
+        s: Chars
     }
 
-    let mut num_seen = HashSet::new();
+    let mut feasi = true;
+    let mut state = 'a';
+    let n = s.len();
+    let mut seen = HashSet::new();
+
+    if n % 2 != 0 {
+        println!("No");
+        return;
+    }
+
     for i in 0..n {
-        for j in 0..m {
-            for k in 0..l {
-                num_seen.insert(a[i] + b[j] + c[k]);
+        if i % 2 == 0 {
+            state = s[i];
+            if seen.contains(&state) {
+                feasi = false;
+                break;
+            }
+            seen.insert(state);
+        } else {
+            if state != s[i] {
+                feasi = false;
+                break;
             }
         }
     }
 
-    for &xi in x.iter() {
-        if num_seen.contains(&xi) {
-            println!("Yes");
-        } else {
-            println!("No");
-        }
+    if feasi {
+        println!("Yes");
+    } else {
+        println!("No");
     }
 }

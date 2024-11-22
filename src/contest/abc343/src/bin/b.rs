@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
@@ -15,17 +14,10 @@ use proconio::input;
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
 
+
 fn main() {
-    let mut ans = vec![];
-    loop {
-        input! {
-            a: usize,
-        }
-        ans.push(a);
-        if a == 0 {
-            break;
-        }
+    input! {
+
     }
 
-    println!("{}", ans.iter().rev().join("\n"));
 }
