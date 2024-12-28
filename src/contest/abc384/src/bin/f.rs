@@ -17,7 +17,19 @@ use proconio::input;
 
 fn main() {
     input! {
+        n: usize,
+        a: [usize;n]
+    }
 
+    let mut pow_2 = vec![0;n];
+
+    for i in 0..n {
+        let mut x = a[i];
+        let mut m = 0;
+        while x % 2 == 0 {
+            m += 1;
+            x /= 2;
+        }
     }
 
 }

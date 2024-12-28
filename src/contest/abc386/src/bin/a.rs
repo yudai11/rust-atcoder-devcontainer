@@ -16,41 +16,28 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
+        a: [usize;4]
     }
 
-    let mut ans = 1;
+    let mut num_c: [usize; 14] = [0; 14];
+    for i in 0..4 {
+        num_c[a[i]] += 1;
+    }
 
-    for i in 1..n {
-        let k = i * i * i;
-        if k > n {
-            break;
+    let mut num_t = 0;
+    let mut num_d = 0;
+    for &x in num_c.iter() {
+        if x == 3 {
+            num_t += 1;
         }
-        // kが回分数か判定
-
-        if judge(k) {
-            ans = k;
-        }
-    }
-
-    println!("{ans}");
-}
-
-fn judge(k: usize) -> bool {
-    let mut l = k;
-    let mut num_vec = vec![];
-    while l > 0 {
-        num_vec.push(l % 10);
-        l /= 10;
-    }
-
-    let m = num_vec.len();
-
-    for i in 0..m {
-        if num_vec[i] != num_vec[m - i - 1] {
-            return false;
+        if x == 2 {
+            num_d += 1;
         }
     }
 
-    return true;
+    if num_t == 1 || num_d == 2 {
+        println!("Yes");
+    } else {
+        println!("No");
+    }
 }

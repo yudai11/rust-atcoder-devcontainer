@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -17,40 +17,25 @@ use proconio::input;
 fn main() {
     input! {
         n: usize,
+        p: [Usize1;n],
+        q: usize,
     }
 
-    let mut ans = 1;
+    let mut loc_list: Vec<usize> = vec![0; n];
 
-    for i in 1..n {
-        let k = i * i * i;
-        if k > n {
-            break;
+    for (i, &pi) in p.iter().enumerate() {
+        loc_list[pi] = i;
+    }
+
+    for _ in 0..q {
+        input! {
+            a: Usize1, b: Usize1
         }
-        // kが回分数か判定
 
-        if judge(k) {
-            ans = k;
-        }
-    }
-
-    println!("{ans}");
-}
-
-fn judge(k: usize) -> bool {
-    let mut l = k;
-    let mut num_vec = vec![];
-    while l > 0 {
-        num_vec.push(l % 10);
-        l /= 10;
-    }
-
-    let m = num_vec.len();
-
-    for i in 0..m {
-        if num_vec[i] != num_vec[m - i - 1] {
-            return false;
+        if loc_list[a] < loc_list[b] {
+            println!("{}", a + 1);
+        } else {
+            println!("{}", b + 1);
         }
     }
-
-    return true;
 }

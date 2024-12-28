@@ -60,7 +60,7 @@ fn main() {
         ans += point as usize;
 
         for i in 0..4 {
-            let x_new = x + dx[i];
+            let x_new = x as isize + dx[i];
             let y_new = y + dy[i];
             if x as isize + dx[i] < h as isize
                 && 0 <= x as isize + dx[i]

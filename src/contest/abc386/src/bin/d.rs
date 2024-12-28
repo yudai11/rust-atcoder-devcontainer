@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -16,19 +16,30 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: usize,
+        n: usize, m: usize
     }
 
-    for _ in 0..n {
-        input! {
-            a: [usize;n]
-        }
+    // 各行について各色の右端を管理(defaultは0)
+    let mut list_bh: Vec<usize> = vec![0; n];
+    let mut list_wh: Vec<usize> = vec![0; n];
 
-        for i in 0..n {
-            if a[i] == 1 {
-                print!("{} ", i + 1);
+    // 各列について各色の下端を管理(defaultは0)
+    let mut list_bv: Vec<usize> = vec![0; n];
+    let mut list_wv: Vec<usize> = vec![0; n];
+
+    for _ in 0..m {
+        input! {
+            x: Usize1, y: Usize1, c: char
+        }
+        if c == 'B' {
+            list_bh[x] = list_bh[x].max(y);
+            list_bv[x] = list_bv[x].max(x);
+        }
+        if c == 'C' {
+            if c == 'B' {
+                list_wh[x] = list_wh[x].max(y);
+                list_wv[x] = list_wv[x].max(x);
             }
         }
-        println!("");
     }
 }

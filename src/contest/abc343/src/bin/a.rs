@@ -14,10 +14,15 @@ use proconio::input;
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
 
-
 fn main() {
     input! {
-
+        a: usize, b: usize
     }
 
+    for i in 0..=9 {
+        if i != a + b {
+            println!("{i}");
+            return;
+        }
+    }
 }
