@@ -1,3 +1,4 @@
+use num_integer::Roots;
 use proconio::input;
 // use proconio::marker::Chars;
 use itertools::Itertools;
@@ -20,9 +21,44 @@ use std::usize;
 fn main() {
     input! {
         n: usize, m: usize,
-        mut p: [usize; n]
+        p: [usize; n]
     }
 
-    let mut left = usize::MAX;
-    let mut right: usize = 0;
+    // 二分探索
+    let mut right = usize::MAX;
+    let mut left: usize = 0;
+    loop {
+        let mid = left + (right - left) / 2;
+        if left == mid {
+            break;
+        }
+        if can(mid, m, n, &p) {
+            left = mid
+        } else {
+            right = mid
+        }
+    }
+
+    let mut total: usize = 0;
+    let mut cnt: usize = 0;
+    for &pi in p.iter() {
+        let num = (left / pi).sqrt() as usize;
+        total += num * num * pi;
+        cnt += num;
+    }
+
+    let ans = cnt + (m - total) / left;
+    println!("{ans}");
+}
+
+fn can(x: usize, m: usize, n: usize, p: &Vec<usize>) -> bool {
+    let mut total: usize = 0;
+    for &pi in p.iter() {
+        let num = (x / pi).sqrt() as usize;
+        total += num * num * pi;
+        if total > m {
+            return false;
+        }
+    }
+    return total <= m;
 }
