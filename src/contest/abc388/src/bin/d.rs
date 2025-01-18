@@ -1,6 +1,6 @@
 use proconio::input;
 // use proconio::marker::Chars;
-// use itertools::Itertools;
+use itertools::Itertools;
 // use std::collections::HashMap;
 // use std::collections::HashSet;
 // use std::collections::VecDeque;
@@ -51,7 +51,11 @@ fn main() {
         b[i] = bi;
     }
 
-    for i in 0..n {
-        print!("{} ", b[i]);
-    }
+    // for i in 0..n {
+    //     print!("{} ", b[i]);
+    // }
+
+    println!("{}", b.iter().join(" "));
+
+    // let s = b.iter().join(" ");
 }
