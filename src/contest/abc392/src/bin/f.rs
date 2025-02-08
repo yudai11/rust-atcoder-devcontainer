@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -14,10 +14,9 @@ use proconio::input;
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
 
-
 fn main() {
     input! {
-
+        n: usize,
+        p: [Usize1; n]
     }
-
 }
