@@ -37,6 +37,7 @@ use proconio::input;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
+// use ac_library::Dsu;
 
 
 fn main() {
