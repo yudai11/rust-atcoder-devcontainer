@@ -1,6 +1,6 @@
 use proconio::input;
 // use proconio::marker::Chars;
-use itertools::Itertools;
+// use itertools::Itertools;
 // use std::collections::HashMap;
 // use std::collections::HashSet;
 // use std::collections::VecDeque;
@@ -12,22 +12,13 @@ use itertools::Itertools;
 // use std::cmp::Reverse;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
-use ac_library::{Additive, Segtree}; // segtree
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+
 
 fn main() {
     input! {
-        n: usize,
-        p: [usize; n]
+
     }
 
-    let mut seg_tree = Segtree::<Additive<_>>::from(vec![1; n]);
-
-    let mut ans = vec![0; n];
-    for (i, &p) in p.iter().enumerate().rev() {
-        let j = seg_tree.max_right(0, |&m| m < p);
-        ans[j] = i + 1;
-        seg_tree.set(j, 0);
-    }
-
-    println!("{}", ans.iter().join(" "));
 }
