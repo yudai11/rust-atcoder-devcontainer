@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
@@ -19,19 +20,46 @@ fn main() {
         n: usize, m: usize
     }
 
-    let gap = m + 9 - 10 * n;
-
-    let mut ans = vec![1; n];
-    for i in 0..n - 1 {
-        ans[i + 1] = ans[i] + 10
+    let mut pre_ans = vec![];
+    let mut ans = vec![];
+    let mut num_ans = 1_usize;
+    for i in 0..n {
+        pre_ans.push(1 + i * 10);
     }
 
-    let mut x = n;
-    for _i in 0..gap {
-        x *= n;
+    if pre_ans[n - 1] > m {
+        return;
     }
 
-    x = (x - 1) / (n - 1);
+    ans.push(pre_ans.clone());
+    loop {
+        pre_ans[n - 1] += 1;
 
-    println!("{x}");
+        // 繰り上げ
+        loop {
+            let mut can_stop = true;
+            for i in (1..n).rev() {
+                if pre_ans[i] > m + 10 * i - 10 * (n - 1) {
+                    pre_ans[i - 1] += 1;
+                    for j in i..n {
+                        pre_ans[j] = pre_ans[j - 1] + 10;
+                    }
+                    can_stop = false;
+                }
+            }
+            if can_stop || pre_ans[0] > m - 10 * (n - 1) {
+                break;
+            }
+        }
+        if pre_ans[0] > m - 10 * (n - 1) {
+            break;
+        }
+        ans.push(pre_ans.clone());
+        num_ans += 1;
+    }
+
+    println!("{}", num_ans);
+    for i in 0..num_ans {
+        println!("{}", ans[i].iter().join(" "));
+    }
 }

@@ -1,7 +1,7 @@
-use std::collections::HashSet;
-
 use proconio::input;
 use proconio::marker::Chars;
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
 // use itertools::Itertools;
 // use std::collections::HashMap;
 // use std::collections::HashSet;
@@ -15,25 +15,24 @@ use proconio::marker::Chars;
 // heap型の集合: .firstでmin,.lastでMAXを得られる。
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
 fn main() {
     input! {
-        h: usize, w: usize, d: isize,
+        h: usize, w: usize, d: usize,
         s: [Chars; h]
     }
 
-    let mut t: Vec<Vec<isize>> = vec![vec![-1; w]; h];
-    let mut to_see = HashSet::new();
+    let mut when_humidified: Vec<Vec<usize>> = vec![vec![d + 2; w]; h];
+    let mut to_see = BinaryHeap::new();
     let mut ans: usize = 0;
 
     for i in 0..h {
         for j in 0..w {
             if s[i][j] == 'H' {
-                t[i][j] = d + 1;
+                when_humidified[i][j] = 0;
+                to_see.push((Reverse(0_usize), i, j));
                 ans += 1;
-            } else if s[i][j] == '.' {
-                t[i][j] = 0;
-                to_see.insert(i * w + j);
             }
         }
     }
@@ -41,29 +40,43 @@ fn main() {
     let dx: [isize; 4] = [0, 0, 1, -1];
     let dy: [isize; 4] = [1, -1, 0, 0];
 
-    for _i in 0..d as usize {
-        let mut remove_list = vec![];
-        for &v in to_see.iter() {
-            let (x, y) = ((v / w) as isize, (v % w) as isize);
-            for i in 0..4 {
-                if x + dx[i] < h as isize
-                    && 0 <= x + dx[i]
-                    && y + dy[i] < w as isize
-                    && 0 <= y + dy[i]
+    while !to_see.is_empty() {
+        let p = to_see.pop().unwrap();
+        if (p.0).0 >= d {
+            continue;
+        }
+        for i in 0..4 {
+            // 移動できるとき
+            if p.1 as isize + dx[i] >= 0
+                && p.1 as isize + dx[i] < h as isize
+                && p.2 as isize + dy[i] >= 0
+                && p.2 as isize + dy[i] < w as isize
+                && s[(p.1 as isize + dx[i]) as usize][(p.2 as isize + dy[i]) as usize] != '#'
+            {
+                if when_humidified[(p.1 as isize + dx[i]) as usize][(p.2 as isize + dy[i]) as usize]
+                    > d + 1
                 {
-                    let q = t[(x + dx[i]) as usize][(y + dy[i]) as usize];
-                    if q > 1 {
-                        t[x as usize][y as usize] = t[x as usize][y as usize].max(q - 1);
+                    ans += 1;
+                }
+
+                // 最短経路の更新ができるなら再び入れる <- 重要，入れないと参照回数が重複しすぎて終わる
+                if (p.0).0
+                    < when_humidified[(p.1 as isize + dx[i]) as usize]
+                        [(p.2 as isize + dy[i]) as usize]
+                {
+                    when_humidified[(p.1 as isize + dx[i]) as usize]
+                        [(p.2 as isize + dy[i]) as usize] = (p.0).0;
+
+                    // まだ移動の余地がある．
+                    if (p.0).0 + 1 < d {
+                        to_see.push((
+                            Reverse((p.0).0 + 1),
+                            (p.1 as isize + dx[i]) as usize,
+                            (p.2 as isize + dy[i]) as usize,
+                        ))
                     }
                 }
             }
-            if t[x as usize][y as usize] > 0 {
-                remove_list.push(v);
-            }
-        }
-        for v in remove_list.iter() {
-            to_see.remove(&v);
-            ans += 1;
         }
     }
 

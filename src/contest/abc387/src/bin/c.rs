@@ -16,97 +16,71 @@ use proconio::input;
 
 fn main() {
     input! {
-        l: usize, r: usize
+        l: usize,
+        r: usize
     }
 
-    let mut ans: usize = f(r) - f(l);
-
-    println!("{}", ans);
+    println!("{}", f(r) - f(l - 1));
 }
 
+// x以下のヘビ数の数を返す関数
 fn f(x: usize) -> usize {
-    // lower <= l <= upper <= r
-    let mut lower: usize = 1;
-    let mut upper: usize = 1;
-
-    while l / lower >= 10 || r / upper >= 10 {
-        if l / lower >= 10 {
-            lower *= 10;
-        }
-        if r / upper >= 10 {
-            upper *= 10;
-        }
+    // 数字を文字列の配列にする
+    let y = x.to_string().chars().collect::<Vec<_>>();
+    // 文字列の配列を数字の配列にする
+    let mut z = vec![];
+    for &yi in y.iter() {
+        z.push(yi as usize - '0' as usize);
     }
-
-    let head_l = l / lower;
-    let head_r = r / upper;
-    let l_fl = head_l * lower;
-    let r_fl = head_r * upper;
-
-    let mut i: usize = 0;
-    let mut pow_10: usize = 1;
-    while pow_10 <= r_fl {
-        let def = pow_10;
-        for j in 0..10 {
-            if pow_10 > r_fl {
-                break;
-            }
-            let mut plus: usize = 1;
-            for k in 0..i {
-                plus *= j;
-            }
-            ans += plus;
-            pow_10 += def;
-        }
-
-        i += 1
-    }
-
-    let mut i: usize = 0;
-    let mut pow_10: usize = 1;
-    while pow_10 <= l_fl {
-        let def = pow_10;
-        for j in 0..10 {
-            if pow_10 > l_fl {
-                break;
-            }
-            let mut plus: usize = 1;
-            for k in 0..i {
-                plus *= j;
-            }
-            ans -= plus;
-            pow_10 += def;
-        }
-
-        i += 1
-    }
-
-    let mut i: usize = 0;
-    let mut pow_10: usize = 1;
-    while l / pow_10 > 0 {
-        if (l / pow_10) % 10 >= head_l {
+    let n = z.len();
+    let mut res = 0_usize;
+    // (i) xがヘビ数ならば+1
+    let mut feasi = true;
+    for i in 1..n {
+        if z[i] >= z[0] {
+            feasi = false;
             break;
         }
-
-        pow_10 *= 10;
     }
-    let mut plus = 1;
-    for j in 0..i {
-        plus *= head_l;
+    if feasi {
+        res += 1;
     }
-    ans -= plus;
-
-    let mut i: usize = 0;
-    let mut pow_10: usize = 1;
-    while r / pow_10 > 0 {
-        if (r / pow_10) % 10 >= head_r {
+    // (ii) n桁の数であり上からk桁(0<= k < n-1)はxと一致しk+1桁目がxより小さいヘビ数
+    for k in 0..n - 1 {
+        // k桁目までがヘビ数の条件を満たすかチェック
+        if k > 0 && z[k] >= z[0] {
             break;
         }
-        pow_10 *= 10;
+        if z[k + 1] == 0 {
+            continue;
+        }
+        // k+1桁目は min(xのk+1桁目の数, xの1桁目の数) 通りの候補がある．
+        let mut plus = z[k + 1].min(z[0]);
+        for _i in k + 2..n {
+            plus *= z[0];
+        }
+        res += plus;
     }
-    let mut plus = 1;
-    for j in 0..i {
-        plus *= head_r;
+    // (iii) n桁の数であり上から1桁目がxより小さいヘビ数
+    // 1桁目がi
+    for i in 1..z[0] {
+        let mut plus = 1_usize;
+        for _j in 1..n {
+            plus *= i;
+        }
+        res += plus;
     }
-    ans += plus;
+    // (iv) k桁のヘビ数(k < n)
+    for k in 1..n {
+        // 1桁目がi
+        for i in 1..10 {
+            let mut plus = 1_usize;
+            for _j in 1..k {
+                plus *= i;
+            }
+            res += plus;
+        }
+    }
+
+    return res;
 }
