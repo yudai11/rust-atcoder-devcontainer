@@ -14,32 +14,37 @@ use proconio::{input, marker::Usize1};
 // use std::collections::BTreeSet;
 // use ac_library::{Additive, Segtree}; // segtree
 
+// 単調性に注目する．(xの増加に対する黒の範囲の単調減少)
 fn main() {
     input! {
-        n: usize, m: usize
+        n: usize, m: usize,
+        mut xyc: [(Usize1,Usize1,char);m]
     }
 
-    // 各行について各色の右端を管理(defaultは0)
-    let mut list_bh: Vec<usize> = vec![0; n];
-    let mut list_wh: Vec<usize> = vec![0; n];
-
-    // 各列について各色の下端を管理(defaultは0)
-    let mut list_bv: Vec<usize> = vec![0; n];
-    let mut list_wv: Vec<usize> = vec![0; n];
-
-    for _ in 0..m {
-        input! {
-            x: Usize1, y: Usize1, c: char
+    // 第0要素->第1要素の順に昇順ソート(辞書順)
+    xyc.sort_by(|&x, &y| {
+        if x.0 != y.0 {
+            x.0.cmp(&y.0)
+        } else if x.1 != y.1 {
+            x.1.cmp(&y.1)
+        } else {
+            (y.2 as usize).cmp(&(x.2 as usize))
         }
+    });
+
+    let mut min_y = n + 1;
+    for &(_x, y, c) in xyc.iter() {
         if c == 'B' {
-            list_bh[x] = list_bh[x].max(y);
-            list_bv[x] = list_bv[x].max(x);
-        }
-        if c == 'C' {
-            if c == 'B' {
-                list_wh[x] = list_wh[x].max(y);
-                list_wv[x] = list_wv[x].max(x);
+            if y >= min_y {
+                println!("No");
+                return;
             }
         }
+        if c == 'W' {
+            // yに上限(下端)を侵食される
+            min_y = min_y.min(y);
+        }
     }
+
+    println!("Yes");
 }

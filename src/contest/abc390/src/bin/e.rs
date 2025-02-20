@@ -1,18 +1,4 @@
 use proconio::{input, marker::Usize1};
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// 優先度付きのque, peek,popで最大値を散り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()で最小値を取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree
 
 fn main() {
     input! {
@@ -20,52 +6,35 @@ fn main() {
         vac: [(Usize1,usize,usize);n]
     }
 
-    let mut dp: Vec<Vec<usize>> = vec![vec![1000_000_000_000; 3]; x + 1];
-    for i in 0..3 {
-        dp[0][i] = 0;
-    }
-    for i in 0..n {
+    // 各ビタミンについて消費カロリー固定化での最大摂取量を求める(オンラインdpを用いる)
+    let mut dp: Vec<Vec<usize>> = vec![vec![0_usize; x + 1]; 3];
+    let (v, a, c) = vac[0];
+    dp[v][c] = a;
+    // online dpの実行
+    for i in 1..n {
         let (v, a, c) = vac[i];
-        for j in 0..=x - c {
-            for k in 0..3 {
-                if dp[j][k] < 1000_000_00_000 {
-                    if dp[j + c][k] > 1000_000_00_000 {
-                        dp[j + c][v] = dp[j][k] + a;
-                    } else {
-                        dp[j + c][v] = dp[j + c][v].max(dp[j][k] + a);
-                    }
-                }
-            }
+        // 小さいものを参照する関係上上から順に見ることでオンラインにdpが行える．
+        for j in (c..=x).rev() {
+            dp[v][j] = dp[v][j].max(dp[v][j - c] + a);
         }
     }
 
-    // 二分探索
-    let mut right = usize::MAX;
-    let mut left: usize = 0;
-    loop {
-        let mid = left + (right - left) / 2;
-        if left == mid {
-            break;
+    // 半分全列挙によりminmaxを求める．
+    // costがp以下のときのvitamin_0 とvitamin_1のminmax
+    let mut minmax_zero_one = vec![0_usize; x + 1];
+    for i in 0..=x {
+        for j in 0..=x - i {
+            minmax_zero_one[i + j] = minmax_zero_one[i + j].max(dp[0][i].min(dp[1][j]))
         }
-        if can(x, mid, &dp) {
-            left = mid
-        } else {
-            right = mid
+    }
+    // costがp以下のときのvitami3種類のminmax
+    let mut minmax_all = vec![0; x + 1];
+    for i in 0..=x {
+        for j in 0..=x - i {
+            minmax_all[i + j] = minmax_all[i + j].max(minmax_zero_one[i].min(dp[2][j]))
         }
     }
 
-    println!("{left}");
-}
-
-fn can(x: usize, y: usize, dp: &Vec<Vec<usize>>) -> bool {
-    let mut mins = [10000_usize; 3];
-    for i in 0..x + 1 {
-        for j in 0..3 {
-            if dp[i][j] >= y && dp[i][j] < 1000_000_00_000 {
-                mins[j] = mins[j].min(i);
-            }
-        }
-    }
-
-    return mins.iter().fold(0_usize, |sum, &x| sum + x) <= x;
+    let ans = minmax_all[x];
+    println!("{}", ans);
 }
