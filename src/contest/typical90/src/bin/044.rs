@@ -1,31 +1,25 @@
-use proconio::{input, marker::Usize1};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        (n, q) : (usize,usize),
-        mut a: [usize;n],
+
     }
 
-    let mut i = 0;
-
-    for _ in 0..q {
-        input! {t: u8}
-        if t == 1 {
-            input! {(x,y): (Usize1,Usize1)}
-            let tmp = a[(x + i) % n];
-            a[(x + i) % n] = a[(y + i) % n];
-            a[(y + i) % n] = tmp;
-        }
-        if t == 2 {
-            input! {(_x,_y): (usize,usize)}
-            i += n - 1;
-            i %= n;
-        }
-        if t == 3 {
-            input! {(x,_y): (Usize1,usize)}
-            println!("{}", a[(x + i) % n]);
-        }
-    }
 }

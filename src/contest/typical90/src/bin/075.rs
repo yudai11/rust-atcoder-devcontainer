@@ -1,36 +1,25 @@
-use num_integer::Roots;
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        n: usize
+
     }
 
-    let upper = n.sqrt() + 1;
-    let mut x = n;
-    let mut num_of_prime_factor: usize = 0;
-    // let mut seen = vec![false; upper];
-    for i in 2..upper {
-        while x % i == 0 {
-            num_of_prime_factor += 1;
-            x /= i;
-        }
-    }
-
-    if x > 1 {
-        num_of_prime_factor += 1;
-    }
-
-    let mut i = 0;
-    let mut pow_2 = 1;
-    loop {
-        if pow_2 >= num_of_prime_factor {
-            println!("{i}");
-            break;
-        }
-        pow_2 *= 2;
-        i += 1;
-    }
 }

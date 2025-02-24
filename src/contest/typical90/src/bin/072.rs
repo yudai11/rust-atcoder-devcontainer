@@ -1,46 +1,25 @@
-use proconio::{input, marker::Chars};
+use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        h: usize, w: usize,
-        c: [Chars;h]
+
     }
 
-    let mut ans = -1;
-
-    for x in 0..h {
-        for y in 0..w {
-            if c[x][y] == '.' {
-                ans = ans.max(search_railway(x, y, &c, h, w));
-            }
-        }
-    }
-
-    println!("{:?}", a);
-}
-
-// Calculate the maximum value of the circumference from each point
-fn search_railway(x: usize, y: usize, c: &Vec<Vec<char>>, h: usize, w: usize) -> isize {
-    let mut ans = -1;
-    let mut seen = vec![vec![false; w]; h];
-    let ans = dfs((x, y), c, &mut seen, h, w);
-    1
-}
-
-fn dfs(
-    node: (usize, usize),
-    c: &Vec<Vec<char>>,
-    seen: &mut Vec<Vec<bool>>,
-    h: usize,
-    w: usize,
-) -> isize {
-    seen[node] = true;
-    for &next in graph[node].iter() {
-        if !seen[next] {
-            dfs(next, &graph, seen, h, w);
-        }
-    }
-    1
 }

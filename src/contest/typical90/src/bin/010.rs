@@ -1,35 +1,25 @@
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        n: usize,
-        cp: [(usize, usize); n],
-        q: usize,
-        lr: [(usize, usize); q]
-    }
-    let mut cum_sum_1_list = vec![0; n + 1];
-    let mut cum_sum_2_list = vec![0; n + 1];
-    let mut cum_sum_1 = 0;
-    let mut cum_sum_2 = 0;
 
-    for i in 1..=n {
-        let cpi = cp[i - 1];
-        if cpi.0 == 1 {
-            cum_sum_1 += cpi.1;
-        } else {
-            cum_sum_2 += cpi.1;
-        }
-        cum_sum_1_list[i] = cum_sum_1;
-        cum_sum_2_list[i] = cum_sum_2;
     }
 
-    for i in 0..q {
-        println!(
-            "{} {}",
-            cum_sum_1_list[lr[i].1] - cum_sum_1_list[lr[i].0 - 1],
-            cum_sum_2_list[lr[i].1] - cum_sum_2_list[lr[i].0 - 1]
-        );
-    }
 }

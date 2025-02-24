@@ -1,31 +1,25 @@
-use std::collections::VecDeque;
-
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        q: usize
+
     }
 
-    let mut yamahuda: VecDeque<usize> = VecDeque::new();
-    let mut ans: Vec<usize> = vec![];
-    for _ in 0..q {
-        input! {
-            t: u8,
-            x: usize
-        }
-        if t == 1 {
-            yamahuda.push_front(x);
-        } else if t == 2 {
-            yamahuda.push_back(x);
-        } else if t == 3 {
-            ans.push(yamahuda[x - 1]);
-        }
-    }
-
-    for &x in ans.iter() {
-        println!("{}", x);
-    }
 }

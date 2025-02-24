@@ -1,44 +1,25 @@
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
-// imos法
+
 fn main() {
     input! {
-        n: usize,
-        coords: [(usize,usize,usize,usize);n]
+
     }
 
-    let mut plane: [[i64; 1002]; 1002] = [[0; 1002]; 1002];
-    let mut ans: Vec<i32> = vec![0; n + 1];
-
-    for i in 0..n {
-        let (a, b, c, d) = coords[i];
-        plane[a][b] += 1;
-        plane[a][d] -= 1;
-        plane[c][b] -= 1;
-        plane[c][d] += 1;
-    }
-
-    for i in 0..=1000 {
-        for j in 1..=1000 {
-            plane[j][i] += plane[j - 1][i];
-        }
-    }
-
-    for i in 0..=1000 {
-        for j in 1..=1000 {
-            plane[i][j] += plane[i][j - 1];
-        }
-    }
-
-    for i in 0..=1000 {
-        for j in 0..=1000 {
-            ans[plane[i][j] as usize] += 1;
-        }
-    }
-
-    for i in 1..=n {
-        println!("{}", ans[i]);
-    }
 }

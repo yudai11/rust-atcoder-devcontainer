@@ -14,13 +14,7 @@ fn main() {
     let mut seen_list = vec![];
     for i in 0..n {
         match s[i] {
-            '(' => {
-                seen_list.push(s[i]);
-            }
-            '[' => {
-                seen_list.push(s[i]);
-            }
-            '<' => {
+            '(' | '[' | '<' => {
                 seen_list.push(s[i]);
             }
             ')' => {
@@ -56,10 +50,7 @@ fn main() {
                     return;
                 }
             }
-            _ => {
-                println!("No");
-                return;
-            }
+            _ => unreachable!(),
         }
     }
 

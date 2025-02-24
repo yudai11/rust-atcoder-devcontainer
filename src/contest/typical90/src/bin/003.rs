@@ -1,52 +1,25 @@
 use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
-use std::collections::VecDeque;
+// use std::collections::HashMap;
+// use std::collections::HashSet;
+// use std::collections::VecDeque;
+// use petgraph::unionfind::UnionFind;
+// use std::collections::BinaryHeap;
+// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
+// use proconio::marker::Isize1;
+// use proconio::marker::Usize1;
+// use std::cmp::Reverse;
+// heap型の集合: .firstでmin,.lastでMAXを得られる。
+// use std::collections::BTreeSet;
+// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
+// use ac_library::Dsu;
+// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+
 
 fn main() {
     input! {
-        n: usize,
-        mut ab : [(usize, usize); n-1],
+
     }
 
-    let mut graph_list = vec![vec![]; n];
-
-    for &(u, v) in &ab {
-        graph_list[u - 1].push(v - 1);
-        graph_list[v - 1].push(u - 1);
-    }
-
-    let s = search_furthest(&graph_list, 0).0;
-    let ans = search_furthest(&graph_list, s).1 + 1;
-
-    println!("{}", ans);
-}
-
-// 一番遠い点とその距離を返す
-fn search_furthest(graph_list: &[Vec<usize>], s: usize) -> (usize, u64) {
-    let n = graph_list.len();
-    let mut seen = vec![false; n];
-    let mut dist = vec![0; n];
-    let mut queue = VecDeque::new();
-    seen[s] = true;
-    queue.push_back(s);
-
-    while !queue.is_empty() {
-        let v = queue.pop_front().unwrap();
-        for &u in &graph_list[v] {
-            if seen[u] {
-                continue;
-            }
-            queue.push_back(u);
-            seen[u] = true;
-            dist[u] = dist[v] + 1;
-        }
-    }
-
-    let ans = dist
-        .iter()
-        .enumerate()
-        .max_by_key(|&(_, &v)| v as i32)
-        .unwrap();
-    return (ans.0, *ans.1);
 }
