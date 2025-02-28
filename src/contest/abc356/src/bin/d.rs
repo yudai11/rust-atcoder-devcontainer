@@ -2,22 +2,43 @@ use proconio::input;
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 
-const MOD: i64 = 998244353;
-
-fn count(n: i64, i: i32) -> usize {}
+const MOD: usize = 998244353;
 
 fn main() {
     input! {
-        n: i64,
-        m: i64,
+        n: usize,
+        m: usize,
     }
 
-    let mut ans: i128 = 0;
+    let mut where_m_is_pop: Vec<usize> = vec![];
+
+    let mut ans: usize = 0;
 
     for i in 0..61 {
-        m_i_bidigit = (m >> i) & 1;
-        if m_i_digit == 0 {
-            continue;
+        let m = (m >> i) & 1;
+        if m != 0 {
+            where_m_is_pop.push(i);
         }
     }
+
+    for &i in where_m_is_pop.iter() {
+        ans += count(n, i);
+        ans %= MOD;
+    }
+
+    println!("{}", ans);
+}
+
+fn count(n: usize, i: usize) -> usize {
+    // let x = (1 << (i as u32 + 1)) as usize;
+    let x = 2_usize.pow(i as u32 + 1);
+    let t = n / x;
+    let mut res: usize = t * (x / 2);
+    res %= MOD;
+    let y = n % x;
+    if y >= x / 2 {
+        res += y + 1 - x / 2;
+        res %= MOD;
+    }
+    res
 }

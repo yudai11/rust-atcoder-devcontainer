@@ -11,11 +11,11 @@ use proconio::{input, marker::Chars};
 // use std::cmp::Reverse;
 // use std::collections::BTreeSet;
 
+const MOD: usize = 998244353;
+
 fn main() {
     input! {
         n: usize, k: usize,
         s: Chars
     }
-
-    const MOD: usize = 998244353;
 }

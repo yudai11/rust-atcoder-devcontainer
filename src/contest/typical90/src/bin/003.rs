@@ -1,25 +1,75 @@
-use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+use proconio::{input, marker::Usize1};
 
-
+// 全方位木DP
 fn main() {
     input! {
-
+        n: usize,
+        edges: [(Usize1,Usize1);n-1]
     }
 
+    let mut graph = vec![vec![]; n];
+    for &(u, v) in edges.iter() {
+        graph[u].push(v);
+        graph[v].push(u);
+    }
+
+    // 最遠点との距離
+    let mut dp = vec![0_usize; n];
+
+    dfs1(0, None, &graph, &mut dp);
+    dfs2(0, None, &graph, &mut dp, 0);
+
+    let ans = dp.iter().fold(0_usize, |res, &x| res.max(x));
+    println!("{}", ans);
+}
+
+fn dfs1(node: usize, parent: Option<usize>, graph: &Vec<Vec<usize>>, dp: &mut Vec<usize>) {
+    match parent {
+        Some(p) => {
+            for &next in graph[node].iter() {
+                if next == p {
+                    continue;
+                }
+                dfs1(next, Some(node), graph, dp);
+                dp[node] = dp[node].max(dp[next] + 1);
+            }
+        }
+        None => {
+            for &next in graph[node].iter() {
+                dfs1(next, Some(node), graph, dp);
+                dp[node] = dp[node].max(dp[next] + 1);
+            }
+        }
+    }
+}
+
+fn dfs2(
+    node: usize,
+    parent: Option<usize>,
+    graph: &Vec<Vec<usize>>,
+    dp: &mut Vec<usize>,
+    y: usize,
+) {
+    dp[node] = dp[node].max(y + 1);
+    let mut q = vec![];
+    q.push(0);
+    q.push(y);
+    for &next in graph[node].iter() {
+        if Some(next) != parent {
+            q.push(dp[next] + 1);
+        }
+    }
+    q.sort();
+    q.reverse();
+    // dp[node] = dp[node].max(q[0] + 1);
+    for &next in graph[node].iter() {
+        if Some(next) == parent {
+            continue;
+        }
+        if q[0] == dp[next] + 1 {
+            dfs2(next, Some(node), graph, dp, q[1] + 1);
+        } else {
+            dfs2(next, Some(node), graph, dp, q[0] + 1);
+        }
+    }
 }
