@@ -1,25 +1,34 @@
-use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
-
+use itertools::Itertools;
+use proconio::{input, marker::Usize1};
 
 fn main() {
     input! {
-
+        n: usize,
+        cp: [(Usize1,usize); n],
+        q: usize,
+        lr: [(Usize1,Usize1); q]
     }
 
+    // 組jにおける学籍番号0~iの生徒の合計得点
+    let mut sum_score = vec![vec![0_usize; 2]; n];
+    for (i, &(c, p)) in cp.iter().enumerate() {
+        if i > 0 {
+            sum_score[i][0] = sum_score[i - 1][0];
+            sum_score[i][1] = sum_score[i - 1][1];
+        }
+        sum_score[i][c] += p;
+    }
+
+    let mut ans = vec![vec![]; q];
+    for (i, &(l, r)) in lr.iter().enumerate() {
+        if l == 0 {
+            ans[i].push(sum_score[r][0]);
+            ans[i].push(sum_score[r][1]);
+        } else {
+            ans[i].push(sum_score[r][0] - sum_score[l - 1][0]);
+            ans[i].push(sum_score[r][1] - sum_score[l - 1][1]);
+        }
+    }
+
+    println!("{}", ans.iter().map(|ai| ai.iter().join(" ")).join("\n"));
 }

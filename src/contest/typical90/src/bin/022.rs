@@ -1,25 +1,30 @@
 use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
-
 
 fn main() {
     input! {
-
+        mut a: [isize;3]
     }
 
+    let x = gcd(a[0], a[1]);
+    let y = gcd(x, a[2]);
+
+    a.sort();
+
+    let ans = a.iter().fold(0_isize, |sum, &x| sum + x / y - 1);
+    println!("{}", ans);
+}
+
+fn gcd(x: isize, y: isize) -> isize {
+    let mut a = vec![x, y];
+    loop {
+        a.sort();
+        if a[0] <= 1 {
+            return 1;
+        }
+        let m = a[1] % a[0];
+        if m == 0 {
+            return a[0];
+        }
+        a[1] = m;
+    }
 }

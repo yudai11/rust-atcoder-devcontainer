@@ -16,10 +16,21 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
-
 fn main() {
     input! {
-
+        n: usize, k: isize,
+        a: [isize; n],
+        b: [isize; n]
     }
 
+    let mut total_cost = 0_isize;
+    for i in 0..n {
+        total_cost += (a[i] - b[i]).abs();
+    }
+
+    if k >= total_cost && (k - total_cost) % 2 == 0 {
+        println!("Yes");
+    } else {
+        println!("No");
+    }
 }

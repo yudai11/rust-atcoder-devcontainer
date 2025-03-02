@@ -16,10 +16,11 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
+const MOD: usize = 1000_000_007;
 
 fn main() {
     input! {
-
+        n: usize, b: usize, k: usize,
+        c: [usize;k]
     }
-
 }

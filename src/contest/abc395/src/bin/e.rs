@@ -24,15 +24,14 @@ fn main() {
 }
 
 fn dijkstra(graph: &Vec<Vec<(usize, usize)>>, n: usize, start: usize) -> Vec<usize> {
-    let infty: usize = 1 << 60;
+    let infty: usize = 1000_000_000_000_000_000 as usize;
     // returnするvector
     let mut dist = vec![infty; n];
     // 最大値が先頭に来るpriority queue
     let mut queue = BinaryHeap::new();
     queue.push((Reverse(0), start));
     dist[start] = 0;
-    while !queue.is_empty() {
-        let p = queue.pop().unwrap();
+    while let Some(p) = queue.pop() {
         for &v in graph[p.1].iter() {
             let to_v = dist[p.1] + v.1 as usize;
             if dist[v.0] > to_v {
