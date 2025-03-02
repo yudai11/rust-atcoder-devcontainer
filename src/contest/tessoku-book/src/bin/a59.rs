@@ -35,7 +35,6 @@ fn main() {
 
 use ac_library::{Additive, LazySegtree, MapMonoid, Monoid};
 struct S {}
-
 impl MapMonoid for S {
     type M = Additive<usize>; // 区間クエリは各区間の合計を返す
     type F = usize; // 更新に使う値の型は usize
