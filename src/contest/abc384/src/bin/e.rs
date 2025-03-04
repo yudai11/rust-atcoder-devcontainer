@@ -1,85 +1,58 @@
-use amplify::confinement::Collection;
 use proconio::{input, marker::Usize1};
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-use std::collections::{BinaryHeap, HashSet};
-// 優先度付きのque, peek,popで最大値を散り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()で最小値を取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
 use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree
+use std::collections::BinaryHeap;
 
 fn main() {
     input! {
-        h: usize, w: usize, zz: usize,
+        h: usize, w: usize, x: usize,
         p: Usize1, q: Usize1,
         s: [[usize;w];h]
     }
 
-    let mut to_see: BinaryHeap<(Reverse<usize>, usize, usize, usize)> = BinaryHeap::new();
-    let mut seen = HashSet::new();
-    let mut ans: usize = s[p][q];
-    seen.insert((h * p + q) as isize);
+    let mut ans = s[p][q];
 
-    let dx: [isize; 4] = [0, 0, 1, -1];
-    let dy: [isize; 4] = [1, -1, 0, 0];
+    let dd: [(isize, isize); 4] = [(0, 1), (1, 0), (-1, 0), (0, -1)];
+    let mut seen = vec![vec![false; w]; h];
+    let mut queue = BinaryHeap::new();
+    queue.push((Reverse(0_usize), p, q));
 
-    for i in 0..4 {
-        if p as isize + dx[i] < h as isize
-            && 0 <= p as isize + dx[i]
-            && q as isize + dy[i] < w as isize
-            && 0 <= q as isize + dy[i]
-        {
-            let x_new = (p as isize + dx[i]) as usize;
-            let y_new = (q as isize + dy[i]) as usize;
-            if !seen.contains(&(h * x_new + y_new)) {
-                to_see.push((
-                    Reverse(s[x_new as usize][y_new as usize]),
-                    s[x_new as usize][y_new as usize],
-                    x_new,
-                    y_new,
-                ));
-
-                seen.insert((h * x_new + y_new) as isize);
-            }
+    while let Some(u) = queue.pop() {
+        seen[u.1][u.2] = true;
+        let Reverse(val) = u.0;
+        // オーバーフローに注意
+        if val >= (ans + x - 1) / x {
+            break;
         }
-    }
-
-    while !to_see.is_empty() {
-        let (_p, point, x, y) = to_see.pop().unwrap();
-        if point as usize > ans / zz {
-            println!("{ans}");
-            return;
-        }
-        ans += point as usize;
-
+        ans += val;
         for i in 0..4 {
-            let x_new = x as isize + dx[i];
-            let y_new = y + dy[i];
-            if x as isize + dx[i] < h as isize
-                && 0 <= x as isize + dx[i]
-                && y as isize + dy[i] < w as isize
-                && 0 <= y as isize + dy[i]
-            {
-                if !seen.contains(&((h * x_new + y_new) as isize)) {
-                    to_see.push((
-                        Reverse(s[x_new as usize][y_new as usize]),
-                        s[x_new as usize][y_new as usize],
-                        x_new,
-                        y_new,
-                    ));
-
-                    seen.insert((h * x_new + y_new) as isize);
+            if let Some(next) = move_grid(u.1, u.2, dd[i].0, dd[i].1, h, w) {
+                if !seen[next.0][next.1] {
+                    queue.push((Reverse(s[next.0][next.1]), next.0, next.1));
+                    seen[next.0][next.1] = true;
                 }
             }
         }
     }
 
-    println!("{ans}");
+    println!("{}", ans);
+}
+
+// gridの移動ができるならばその中身を返す関数
+fn move_grid(
+    i: usize,
+    j: usize,
+    dx: isize,
+    dy: isize,
+    h: usize,
+    w: usize,
+) -> Option<(usize, usize)> {
+    if i as isize + dx >= 0
+        && i as isize + dx < h as isize
+        && j as isize + dy >= 0
+        && j as isize + dy < w as isize
+    {
+        return Some(((i as isize + dx) as usize, (j as isize + dy) as usize));
+    } else {
+        return None;
+    }
 }
