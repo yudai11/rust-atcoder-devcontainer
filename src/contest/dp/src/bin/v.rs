@@ -43,6 +43,7 @@ fn main() {
     println!("{}", dp.iter().join("\n"));
 }
 
+// 木DP
 fn dfs(node: usize, parent: Option<usize>, graph: &Vec<Vec<usize>>, dp: &mut Vec<usize>, m: usize) {
     match parent {
         Some(p) => {

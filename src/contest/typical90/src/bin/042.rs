@@ -1,25 +1,28 @@
 use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
-
 
 fn main() {
     input! {
-
+        k: usize
     }
 
+    const MOD: usize = 1000_000_007;
+
+    if k % 9 != 0 {
+        println!("0");
+        return;
+    }
+
+    // 桁和が i mod Kとなる正整数の数 (online)
+    let mut dp = vec![0_usize; 10];
+    dp[0] = 1;
+    for i in 1..=k {
+        // let l = i % 10;
+        // 桁和が j 小さい正整数の頭に j in [1..9]を追加することで桁和が i の正整数ができる．逆に全ての桁和が i の正整数はこの操作で作れる(全単射)
+        for j in 1..9 {
+            dp[i % 9] += dp[(i + j) % 9];
+        }
+        dp[i % 9] %= MOD;
+    }
+
+    println!("{}", dp[0]);
 }

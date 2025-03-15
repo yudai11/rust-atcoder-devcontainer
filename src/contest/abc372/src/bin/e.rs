@@ -1,54 +1,65 @@
+use ac_library::Dsu;
 use proconio::{input, marker::Usize1};
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-use std::collections::{BTreeSet, HashSet};
+use std::collections::BinaryHeap;
 
 fn main() {
     input! {
         n: usize, q: usize,
     }
 
-    let mut graph = vec![vec![]; n];
-    let mut seen = HashSet::new();
+    let mut dsu = Dsu::new(n);
+    let mut conn_sets = vec![BinaryHeap::new(); n];
+
     for i in 0..n {
-        graph[i].push(i);
-        seen.insert((i, i));
+        conn_sets[i].push(i);
     }
 
     for _i in 0..q {
         input! {
             a: u8
         }
-        if a == 1 {
-            input! {
-                (u, v) : (Usize1, Usize1)
+        match a {
+            1 => {
+                input! {
+                    u: Usize1, v: Usize1
+                }
+                // uとvを含む連結集合の上から10点を持つheapを作る
+                if dsu.same(u, v) {
+                    continue;
+                } else {
+                    // uとvを含む連結集合の点(Max20点)を持つheap
+                    let mut pre_new_heap = BinaryHeap::new();
+                    // uの連結成分を追加
+                    while let Some(p) = conn_sets[dsu.leader(u)].pop() {
+                        pre_new_heap.push(p);
+                    }
+                    // vの連結成分を追加
+                    while let Some(p) = conn_sets[dsu.leader(v)].pop() {
+                        pre_new_heap.push(p);
+                    }
+                    // uとvを含む連結集合の上から10点を持つheap
+                    let mut new_heap = BinaryHeap::new();
+                    for _j in 0..10 {
+                        if let Some(p) = pre_new_heap.pop() {
+                            new_heap.push(p);
+                        }
+                    }
+                    dsu.merge(u, v);
+                    conn_sets[dsu.leader(u)] = new_heap;
+                }
             }
-            if seen.contains(&(u, v)) || seen.contains(&(v, u)) {
-                continue;
+            2 => {
+                input! {
+                    v: Usize1, k: usize
+                }
+                if conn_sets[dsu.leader(v)].len() < k {
+                    println!("-1");
+                } else {
+                    let ans = *conn_sets[dsu.leader(v)].iter().nth(k - 1).unwrap();
+                    println!("{}", ans + 1);
+                }
             }
-            seen.insert((u, v));
-            graph[u].push(v);
-            graph[v].push(u);
-        } else {
-            input! {
-                (v, k) : (Usize1, usize)
-            }
-            let len = graph[v].len();
-            if len < k {
-                println!("-1");
-            } else {
-                graph[v].sort_by(|a, b| b.cmp(&a));
-                println!("{}", graph[v][k - 1] + 1);
-            }
+            _ => unreachable!(),
         }
     }
 }

@@ -20,10 +20,39 @@ fn main() {
         n: usize,
     }
 
-    for _ in 0..n {
+    let l = t.len();
+    // tのi文字目まで完成させるのに必要なコスト
+    let mut dp = vec![1000_000_000_usize; l + 1];
+    dp[0] = 0;
+
+    for _i in 0..n {
         input! {
-            ai: usize,
-            si: [Chars; ai]
+            a: usize,
+            s: [Chars; a]
         }
+
+        let temp = dp.clone();
+
+        for si in s.iter() {
+            if l < si.len() {
+                continue;
+            }
+            for j in 0..=l - si.len() {
+                for k in 0..si.len() {
+                    if t[j + k] != si[k] {
+                        break;
+                    }
+                    if k == si.len() - 1 {
+                        dp[j + k + 1] = dp[j + k + 1].min(temp[j] + 1);
+                    }
+                }
+            }
+        }
+    }
+
+    if dp[l] > 1000_000_00 {
+        println!("-1");
+    } else {
+        println!("{}", dp[l]);
     }
 }
