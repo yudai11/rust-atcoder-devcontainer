@@ -16,10 +16,19 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
-
 fn main() {
     input! {
-
+        h: usize, w: usize,
+        c: [Chars; h]
     }
 
+    let mut ans = 0_usize;
+
+    for i in 0..h {
+        for j in 0..w {
+            if c[i][j] == '#' {
+                continue;
+            }
+        }
+    }
 }

@@ -16,10 +16,9 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
-
 fn main() {
     input! {
-
+        n: usize, k: usize,
+        xy: [(usize,usize); n]
     }
-
 }
