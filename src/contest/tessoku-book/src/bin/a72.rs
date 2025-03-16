@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Chars};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -15,10 +15,6 @@ use proconio::input;
 // use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
 // use ac_library::Dsu;
 
-
 fn main() {
-    input! {
-
-    }
-
+    input! {}
 }

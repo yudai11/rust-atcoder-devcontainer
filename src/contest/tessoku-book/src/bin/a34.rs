@@ -1,24 +1,41 @@
 use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// 優先度付きのque, peek,popで最大値を散り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()で最小値を取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
 
+// Grundy数とは
+// 盤面 x のGrundy数 y は次で定まる．盤面 x から遷移可能な盤面を x_1,...,x_k としそれぞれのGrundy数を  とすると，y は {y_1,...,y_k} 以外の最小の非負整数である．
+// 各山のGrundy数のXOR和が0ならば後手必勝，!=0 ならば先手必勝
 
 fn main() {
     input! {
-
+        n: usize, x: usize, y: usize,
+        a: [usize; n]
     }
 
+    let mut grundy_numbers = vec![0_usize; 1000_01];
+    for i in x..=1000_00 {
+        let mut seen = vec![];
+        seen.push(grundy_numbers[i - x]);
+        if y <= i {
+            seen.push(grundy_numbers[i - y]);
+        }
+        seen.sort();
+        for j in 0..3 {
+            if seen.contains(&j) {
+                continue;
+            } else {
+                grundy_numbers[i] = j;
+                break;
+            }
+        }
+    }
+
+    let grundy_sum = (0..n)
+        .collect::<Vec<usize>>()
+        .iter()
+        .fold(0_usize, |res, &i| res ^ grundy_numbers[a[i]]);
+
+    if grundy_sum != 0 {
+        println!("First");
+    } else {
+        println!("Second");
+    }
 }
