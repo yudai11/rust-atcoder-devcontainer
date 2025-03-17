@@ -16,10 +16,27 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
-
 fn main() {
     input! {
-
+        n: usize,
+        lr: [(usize,usize); n]
     }
 
+    let mut ans = 0_f64;
+    for i in 0..n {
+        let (li, ri) = lr[i];
+        let prob_i = 1.0 / (ri - li + 1) as f64;
+        for x in li..=ri {
+            for j in 0..i {
+                let (lj, rj) = lr[j];
+                let prob_j = 1.0 / (rj - lj + 1) as f64;
+                for _y in (x + 1).max(lj)..=rj {
+                    ans += prob_i * prob_j;
+                }
+            }
+        }
+    }
+
+    // 桁を指定して表示(浮動小数の表示)
+    println!("{:.12}", ans);
 }
