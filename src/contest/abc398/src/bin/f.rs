@@ -3,29 +3,25 @@ use proconio::{input, marker::Chars};
 
 fn main() {
     input! {
-        s: Chars
+        mut s: Chars
     }
 
     let n = s.len();
-    // $ はダミー文字
-    let mut ms = vec!['$'];
-    for &si in s.iter() {
-        ms.push(si);
-        ms.push('$');
-    }
 
-    let r = manacher(&ms);
+    let stringhash_1 = StringHash::new(&s);
+    s.reverse();
+    let stringhash_2 = StringHash::new(&s);
+
+    // 回分の開始位置
     let mut k = 0_usize;
-
-    let mut i = n;
     loop {
-        if r[i] + k >= n {
+        if stringhash_1.hash_value(k, n - 1) == stringhash_2.hash_value(0, n - 1 - k) {
             break;
         }
         k += 1;
-        i += 1;
     }
 
+    s.reverse();
     let mut t = s.clone();
 
     for i in (0..k).rev() {
@@ -35,28 +31,43 @@ fn main() {
     println!("{}", t.iter().join(""));
 }
 
-fn manacher(s: &Vec<char>) -> Vec<usize> {
-    let n = s.len();
-    // i を中心とする最長の回文の半径を保存
-    let mut dp = vec![0_usize; n];
+struct StringHash {
+    r#mod: usize,
+    power_base: Vec<usize>,
+    h: Vec<usize>,
+}
 
-    let mut i = 0_usize;
-    let mut j = 0_usize;
-
-    while i < n {
-        while i >= j && i + j < n && s[i - j] == s[i + j] {
-            j += 1;
+impl StringHash {
+    fn new(s: &Vec<char>) -> Self {
+        let n = s.len();
+        let r#mod = 2_usize.pow(61) - 1;
+        let mut t = vec![0_usize; n + 1];
+        for i in 1..=n {
+            t[i] = s[i - 1] as usize - 'A' as usize + 1;
         }
-        dp[i] = j;
-
-        let mut k = 1_usize;
-        while i >= k && i + k < n && k + dp[i - k] < j {
-            dp[i + k] = dp[i - k];
-            k += 1;
+        let base = 88_u128;
+        let mut power_base = vec![1_usize; n + 1];
+        for i in 1..=n {
+            power_base[i] = ((base * power_base[i - 1] as u128) % r#mod as u128) as usize;
+        }
+        let mut h = vec![0_usize; n + 1];
+        for i in 1..=n {
+            h[i] = ((base * h[i - 1] as u128 + t[i] as u128) % r#mod as u128) as usize;
         }
 
-        i += k;
-        j -= k;
+        return StringHash {
+            r#mod,
+            power_base,
+            h,
+        };
     }
-    return dp;
+
+    fn hash_value(&self, l: usize, r: usize) -> usize {
+        let mut val = self.h[r + 1] as i128
+            - ((self.h[l] as i128 * self.power_base[r - l + 1] as i128) % self.r#mod as i128);
+        if val < 0 {
+            val += self.r#mod as i128;
+        }
+        return val as usize;
+    }
 }
