@@ -1,25 +1,35 @@
 use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use std::collections::BinaryHeap;
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
-
+use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
 fn main() {
     input! {
-
+        n: usize, m: usize, p: usize,
+        a: [usize; n],
+        mut b: [usize; m]
     }
 
+    b.sort();
+
+    let mut cumsum_b = vec![0_usize; m];
+    cumsum_b[0] = b[0];
+    for i in 1..m {
+        cumsum_b[i] = cumsum_b[i - 1] + b[i];
+    }
+
+    let mut ans = 0_usize;
+    for i in 0..n {
+        if a[i] >= p {
+            ans += p * m;
+            continue;
+        }
+        let ind = b.upper_bound(&(p - a[i] - 1));
+        if ind <= 0 {
+            ans += p * m;
+            continue;
+        }
+        ans += cumsum_b[ind - 1] + a[i] * ind;
+        ans += p * (m - ind);
+    }
+
+    println!("{}", ans);
 }

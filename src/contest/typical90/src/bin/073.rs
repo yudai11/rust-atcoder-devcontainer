@@ -1,4 +1,4 @@
-use proconio::input;
+use proconio::{input, marker::Usize1};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -16,10 +16,12 @@ use proconio::input;
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
 
+const MOD: usize = 1000_000_007;
 
 fn main() {
     input! {
-
+        n: usize,
+        c: [char; n],
+        edges: [(Usize1,Usize1); n-1]
     }
-
 }
