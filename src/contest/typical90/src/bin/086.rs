@@ -1,25 +1,33 @@
-use proconio::input;
-// use proconio::marker::Chars;
-// use itertools::Itertools;
-// use std::collections::HashMap;
-// use std::collections::HashSet;
-// use std::collections::VecDeque;
-// use petgraph::unionfind::UnionFind;
-// use std::collections::BinaryHeap;
-// priority que, peek,popでmax valを取り出せる(push(Reverse(x))とSome(Reverse(min_value)) = que.pop()でmin valを取れる)
-// use proconio::marker::Isize1;
-// use proconio::marker::Usize1;
-// use std::cmp::Reverse;
-// heap型の集合: .firstでmin,.lastでMAXを得られる。
-// use std::collections::BTreeSet;
-// use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
-// use ac_library::Dsu;
-// use superslice::Ext; // for use of lowerbound upperbound method of vetor
+use proconio::{input, marker::Usize1};
 
+const MOD: usize = 1000_000_007;
 
 fn main() {
     input! {
-
+        n: usize, q: usize,
+        xyzw: [(Usize1,Usize1,Usize1,usize); q]
     }
 
+    let mut ans = 1_usize;
+    for i in 0..60 {
+        // i桁目に注目する
+        let mut ways = 0_usize;
+        // Aのi桁目の0/1の組み合わせを全探索
+        for j in 0..2_usize.pow(n as u32) {
+            let mut feasi = true;
+            for &(x, y, z, w) in xyzw.iter() {
+                if ((j >> x) | (j >> y) | (j >> z)) & 1 != (w >> i) & 1 {
+                    feasi = false;
+                    break;
+                }
+            }
+            if feasi {
+                ways += 1;
+            }
+        }
+        ans *= ways;
+        ans %= MOD;
+    }
+
+    println!("{}", ans);
 }

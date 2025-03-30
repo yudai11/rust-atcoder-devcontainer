@@ -29,9 +29,9 @@ fn main() {
     }
     let mut ans = vec![0_usize; q];
 
-    // LIS (最小増加部分列)
+    // LIS (最長増加部分列)
     const MAX_NUM: usize = 1000_000_000_000;
-    // 0~iまでの部分列の中でiを末尾にする最長の部分列の長さ
+    // 0~iまでの増加部分列の中でiを末尾にする最長の部分列の長さ
     let mut dp = vec![1_usize; n];
     // 長さiの単調増加列の中で末尾が最小なものを記録
     let mut least_ends = vec![MAX_NUM; n + 1];
