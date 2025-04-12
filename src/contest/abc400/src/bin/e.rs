@@ -65,11 +65,5 @@ fn main() {
         .map(|&x| pre_ans[x.sqrt()])
         .collect::<Vec<usize>>();
 
-    // let mut ans = vec![];
-    // for &ai in aa.iter() {
-    //     let x = ai.sqrt();
-    //     ans.push(pre_ans[x] * pre_ans[x]);
-    // }
-
     println!("{}", ans.iter().map(|&x| x * x).join("\n"))
 }

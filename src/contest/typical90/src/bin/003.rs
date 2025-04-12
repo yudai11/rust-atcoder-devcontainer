@@ -13,13 +13,13 @@ fn main() {
         graph[v].push(u);
     }
 
-    // 最遠点との距離
+    // 最遠点との距離 /　木の直径
     let mut dp = vec![0_usize; n];
 
     dfs1(0, None, &graph, &mut dp);
     dfs2(0, None, &graph, &mut dp, 0);
 
-    let ans = dp.iter().fold(0_usize, |res, &x| res.max(x));
+    let ans = dp.iter().fold(0_usize, |res, &x| res.max(x)) + 1;
     println!("{}", ans);
 }
 
@@ -50,7 +50,7 @@ fn dfs2(
     dp: &mut Vec<usize>,
     y: usize,
 ) {
-    dp[node] = dp[node].max(y + 1);
+    dp[node] = dp[node].max(y);
     let mut q = vec![];
     q.push(0);
     q.push(y);
