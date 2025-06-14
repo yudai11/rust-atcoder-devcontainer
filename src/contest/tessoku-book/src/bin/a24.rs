@@ -22,7 +22,7 @@ fn main() {
         a: [usize; n]
     }
 
-    // LIS (最小増加部分列)
+    // LIS (最長増加部分列)
     const MAX_NUM: usize = 1000_000_000_000;
     // 0~iまでの部分列の中でiを末尾にする最長の部分列の長さ
     let mut dp = vec![1_usize; n];

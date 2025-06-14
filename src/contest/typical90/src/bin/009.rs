@@ -22,7 +22,7 @@ fn main() {
             angle_list.push(((z - x).atan2(w - y)) * 180.0 / PI % 360.0);
         }
 
-        // f64型のsortはpartial orderを用いる．
+        // f64型のsortはpartial orderを用いる．実数のソート
         angle_list.sort_by(|a, b| a.partial_cmp(b).unwrap());
         for j in 0..n - 1 {
             let x = angle_list[j] + 360.0;

@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use proconio::input;
+use proconio::{fastout, input};
 // use proconio::marker::Chars;
 // use itertools::Itertools;
 // use std::collections::HashMap;
@@ -16,22 +16,23 @@ use proconio::input;
 // use ac_library::{Additive, Segtree}; // segtree,isizeで使う.
 // use ac_library::Dsu;
 // use superslice::Ext; // for use of lowerbound upperbound method of vetor
+#[fastout]
 
 fn main() {
     input! {
         n: usize
     }
 
-    if n % 2 != 0 {
-        return;
-    }
+    // if n % 2 != 0 {
+    //     return;
+    // }
 
-    for i in 0..(1 << n) as usize {
-        let mut p = vec![];
+    for bit in 0..(1 << n) as usize {
+        // let mut p = vec![];
         let mut stack = vec![];
         for j in (0..n).rev() {
-            let x = (i >> j) % 2;
-            p.push(x);
+            let x = (bit >> j) & 1;
+            // p.push(x);
             if stack.len() == 0 {
                 stack.push(x);
             } else if let Some(y) = stack.pop() {
@@ -52,8 +53,8 @@ fn main() {
 
         if stack.len() == 0 {
             let mut res = vec![];
-            for &pi in p.iter() {
-                match pi {
+            for j in (0..n).rev() {
+                match (bit >> j) & 1 {
                     0 => res.push('('),
                     1 => res.push(')'),
                     _ => unreachable!(),

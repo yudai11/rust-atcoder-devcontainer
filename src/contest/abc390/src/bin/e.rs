@@ -20,7 +20,7 @@ fn main() {
     }
 
     // 半分全列挙によりminmaxを求める．
-    // costがp以下のときのvitamin_0 とvitamin_1のminmax
+    // costがi以下のときのvitamin_0 とvitamin_1のminmax
     let mut minmax_zero_one = vec![0_usize; x + 1];
     for i in 0..=x {
         for j in 0..=x - i {

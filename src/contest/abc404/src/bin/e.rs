@@ -19,7 +19,16 @@ use proconio::input;
 
 fn main() {
     input! {
+        n: usize,
+        c: [usize; n-1],
+        a: [usize; n-1]
+    }
 
+    let mut graph = vec![vec![]; n];
+    for i in 1..n {
+        for j in (i.max(c[i-1])-c[i-1])..i-1 {
+            graph[i].push(())
+        }
     }
 
 }
